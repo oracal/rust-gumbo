@@ -8,6 +8,7 @@ pub struct TextType {
 impl TextType {
     pub fn from_gumbo_text(text: *mut ffi::GumboText) -> TextType {
         TextType{ gumbo_text: text }
+    }
 
 
     fn text(self) -> Option<String> {

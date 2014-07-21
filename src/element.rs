@@ -15,13 +15,9 @@ fn build_attributes(attributes: &[*mut ffi::GumboAttribute]) -> HashMap<String, 
         attributes.iter().
             filter(|&ptr| ptr.is_not_null()).
             map(|&ptr| (cstr_to_option_string((*ptr).name), Attribute::from_gumbo_attribute(ptr))).
-            filter_map(|tuple| {
-                let (name, attr) = tuple;
-                if name.is_some() && attr.is_some() {
-                    Some((name.unwrap(), attr.unwrap()))
-                } else {
-                    None
-                }
+            filter_map(|tuple| match tuple {
+                (Some(name), Some(attr)) => Some((name, attr)),
+                _                        => None,
             }).
             collect()
     }
