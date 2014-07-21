@@ -1,0 +1,10 @@
+[package]
+
+name = "gumbo"
+version = "0.1.0"
+authors = [ "Thomas Whitton" ]
+
+[[lib]]
+
+name = "gumbo"
+path = "src/lib.rs"
