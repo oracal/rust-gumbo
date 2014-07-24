@@ -14,7 +14,7 @@ impl Parser {
         Parser { gumbo_options: options }
     }
 
-    pub fn parse(self, body: &str) -> Option<Output> {
+    pub fn parse(&self, body: &str) -> Option<Output> {
         unsafe {
             Output::from_gumbo_output(self.gumbo_options, body.with_c_str(|cstr| ffi::gumbo_parse_with_options(&(self.gumbo_options), cstr, body.len() as u64)))
         }

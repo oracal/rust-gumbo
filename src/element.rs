@@ -28,8 +28,8 @@ impl ElementType {
         unsafe {
             ElementType {
                 gumbo_element: element,
-                children: gumbo_vector_to_vector((*element).children).iter().filter_map(|&ptr| Node::from_gumbo_node(ptr)).collect(),
-                attributes: build_attributes(gumbo_vector_to_vector((*element).attributes).as_slice()),
+                children: gumbo_vector_to_vector(&(*element).children).iter().filter_map(|&ptr| Node::from_gumbo_node(ptr)).collect(),
+                attributes: build_attributes(gumbo_vector_to_vector(&(*element).attributes).as_slice()),
             }
         }
     }
@@ -38,37 +38,37 @@ impl ElementType {
         &self.children
     }
 
-    pub fn tag(self) -> ffi::GumboTag {
+    pub fn tag(&self) -> ffi::GumboTag {
         unsafe {
             (*(self.gumbo_element)).tag
         }
     }
 
-    pub fn tag_namespace(self) -> ffi::GumboNamespaceEnum {
+    pub fn tag_namespace(&self) -> ffi::GumboNamespaceEnum {
         unsafe {
             (*(self.gumbo_element)).tag_namespace
         }
     }
 
-    pub fn original_tag(self) -> Option<String> {
+    pub fn original_tag(&self) -> Option<String> {
         unsafe {
             buffer_to_option_string((*(self.gumbo_element)).original_tag.data, (*(self.gumbo_element)).original_tag.length)
         }
     }
 
-    pub fn original_end_tag(self) -> Option<String> {
+    pub fn original_end_tag(&self) -> Option<String> {
         unsafe {
             buffer_to_option_string((*(self.gumbo_element)).original_end_tag.data, (*(self.gumbo_element)).original_end_tag.length)
         }
     }
 
-    pub fn start_pos(self) -> ffi::GumboSourcePosition {
+    pub fn start_pos(&self) -> ffi::GumboSourcePosition {
         unsafe {
             (*(self.gumbo_element)).start_pos
         }
     }
 
-    pub fn end_pos(self) -> ffi::GumboSourcePosition {
+    pub fn end_pos(&self) -> ffi::GumboSourcePosition {
         unsafe {
             (*(self.gumbo_element)).end_pos
         }

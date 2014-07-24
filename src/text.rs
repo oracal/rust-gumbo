@@ -10,20 +10,19 @@ impl TextType {
         TextType{ gumbo_text: text }
     }
 
-
-    fn text(self) -> Option<String> {
+    fn text(&self) -> Option<String> {
         unsafe {
             cstr_to_option_string((*(self.gumbo_text)).text)
         }
     }
 
-    fn original_text(self) -> Option<String> {
+    fn original_text(&self) -> Option<String> {
         unsafe {
             buffer_to_option_string((*(self.gumbo_text)).original_text.data, (*(self.gumbo_text)).original_text.length)
         }
     }
 
-    fn start_pos(self) -> ffi::GumboSourcePosition {
+    fn start_pos(&self) -> ffi::GumboSourcePosition {
         unsafe {
             (*(self.gumbo_text)).start_pos
         }

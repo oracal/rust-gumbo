@@ -37,17 +37,17 @@ impl Node {
         }
     }
 
-    fn parent(self) -> Option<Node> {
+    pub fn parent(&self) -> Option<Node> {
         Node::from_gumbo_node(self.gumbo_node)
     }
 
-    fn index_within_parent(self) -> size_t {
+    pub fn index_within_parent(&self) -> size_t {
         unsafe {
             (*(self.gumbo_node)).index_within_parent
         }
     }
 
-    fn parse_flags(self) -> ffi::GumboParseFlags {
+    pub fn parse_flags(&self) -> ffi::GumboParseFlags {
         unsafe {
             (*(self.gumbo_node)).parse_flags
         }
