@@ -1,70 +1,56 @@
 use ffi = super::ffi;
-use super::util::{buffer_to_option_string, cstr_to_option_string};
+use std::string::raw::{from_buf, from_buf_len};
 
-pub struct Attribute {
-    gumbo_attribute: *mut ffi::GumboAttribute,
+pub struct Attribute<'a> {
+    gumbo_attribute: &'a ffi::GumboAttribute,
 }
 
-impl Attribute {
-    pub fn from_gumbo_attribute(attribute: *mut ffi::GumboAttribute) -> Option<Attribute> {
-        if attribute.is_null() {
-            None
-        } else {
-            Some(Attribute { gumbo_attribute: attribute })
-        }
+impl<'a> Attribute<'a> {
+    pub fn from_gumbo_attribute(attribute: &'a ffi::GumboAttribute) -> Attribute<'a> {
+        Attribute { gumbo_attribute: attribute }
     }
 
     pub fn namespace(&self) -> ffi::GumboAttributeNamespaceEnum {
+        self.gumbo_attribute.attr_namespace
+    }
+
+    pub fn name(&self) -> String {
         unsafe {
-            (*(self.gumbo_attribute)).attr_namespace
+            from_buf((*(self.gumbo_attribute)).name as *const u8)
         }
     }
 
-    pub fn name(&self) -> Option<String> {
+    pub fn original_name(&self) -> String {
         unsafe {
-            cstr_to_option_string((*(self.gumbo_attribute)).name)
+            from_buf_len((*(self.gumbo_attribute)).original_name.data as *const u8, (*(self.gumbo_attribute)).original_name.length as uint)
         }
     }
 
-    pub fn original_name(&self) -> Option<String> {
+    pub fn value(&self) -> String {
         unsafe {
-            buffer_to_option_string((*(self.gumbo_attribute)).original_name.data, (*(self.gumbo_attribute)).original_name.length)
+            from_buf((*(self.gumbo_attribute)).value as *const u8)
         }
     }
 
-    pub fn value(&self) -> Option<String> {
+    pub fn original_value(&self) -> String {
         unsafe {
-            cstr_to_option_string((*(self.gumbo_attribute)).value)
-        }
-    }
-
-    pub fn original_value(&self) -> Option<String> {
-        unsafe {
-            buffer_to_option_string((*(self.gumbo_attribute)).original_value.data, (*(self.gumbo_attribute)).original_value.length)
+            from_buf_len((*(self.gumbo_attribute)).original_value.data as *const u8, (*(self.gumbo_attribute)).original_value.length as uint)
         }
     }
 
     pub fn name_start(&self) -> ffi::GumboSourcePosition {
-        unsafe {
-            (*(self.gumbo_attribute)).name_start
-        }
+        self.gumbo_attribute.name_start
     }
 
     pub fn name_end(&self) -> ffi::GumboSourcePosition {
-        unsafe {
-            (*(self.gumbo_attribute)).name_end
-        }
+        self.gumbo_attribute.name_end
     }
 
     pub fn value_start(&self) -> ffi::GumboSourcePosition {
-        unsafe {
-            (*(self.gumbo_attribute)).value_start
-        }
+        self.gumbo_attribute.value_start
     }
 
     pub fn value_end(&self) -> ffi::GumboSourcePosition {
-        unsafe {
-            (*(self.gumbo_attribute)).value_end
-        }
+        self.gumbo_attribute.value_end
     }
 }

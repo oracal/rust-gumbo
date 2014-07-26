@@ -1,30 +1,28 @@
 use ffi = super::ffi;
-use super::util::{buffer_to_option_string, cstr_to_option_string};
+use std::string::raw::{from_buf, from_buf_len};
 
-pub struct TextType {
-    gumbo_text: *mut ffi::GumboText,
+pub struct TextType<'a> {
+    gumbo_text: &'a ffi::GumboText,
 }
 
-impl TextType {
-    pub fn from_gumbo_text(text: *mut ffi::GumboText) -> TextType {
+impl<'a> TextType<'a> {
+    pub fn from_gumbo_text(text: &'a ffi::GumboText) -> TextType<'a> {
         TextType{ gumbo_text: text }
     }
 
-    fn text(&self) -> Option<String> {
+    pub fn text(&self) -> String {
         unsafe {
-            cstr_to_option_string((*(self.gumbo_text)).text)
+            from_buf((*(self.gumbo_text)).text as *const u8)
         }
     }
 
-    fn original_text(&self) -> Option<String> {
+    pub fn original_text(&self) -> String {
         unsafe {
-            buffer_to_option_string((*(self.gumbo_text)).original_text.data, (*(self.gumbo_text)).original_text.length)
+            from_buf_len((*(self.gumbo_text)).original_text.data as *const u8, (*(self.gumbo_text)).original_text.length as uint)
         }
     }
 
-    fn start_pos(&self) -> ffi::GumboSourcePosition {
-        unsafe {
-            (*(self.gumbo_text)).start_pos
-        }
+    pub fn start_pos(&self) -> ffi::GumboSourcePosition {
+        self.gumbo_text.start_pos
     }
 }

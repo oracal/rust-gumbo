@@ -1,3 +1,4 @@
+#![feature(unsafe_destructor)]
 #![crate_name = "gumbo"]
 #![comment = "A rust wrapper for google's html parsing library"]
 #![license = "MIT"]
@@ -13,7 +14,7 @@ pub use document::DocumentType;
 pub use text::TextType;
 pub use node::{Document, Element, Text, Cdata, Comment, Whitespace};
 
-pub mod ffi;
+mod ffi;
 mod node;
 mod output;
 mod attribute;
@@ -22,3 +23,4 @@ mod element;
 mod text;
 mod util;
 mod parser;
+pub mod tag;

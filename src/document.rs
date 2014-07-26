@@ -1,53 +1,48 @@
 use ffi = super::ffi;
 use super::node::Node;
-use super::util::{cstr_to_option_string, gumbo_vector_to_vector};
+use super::util::gumbo_vector_to_vector;
+use std::string::raw::from_buf;
 
-pub struct DocumentType {
-    gumbo_document: *mut ffi::GumboDocument,
-    children: Vec<Node>,
+pub struct DocumentType<'a> {
+    gumbo_document: &'a ffi::GumboDocument,
+    children: Vec<Node<'a>>,
 }
 
-impl DocumentType {
-    pub fn from_gumbo_document(document: *mut ffi::GumboDocument) -> DocumentType {
-        unsafe {
-            DocumentType {
-                gumbo_document: document,
-                children: gumbo_vector_to_vector(&(*document).children).iter().filter_map(|&ptr| Node::from_gumbo_node(ptr)).collect(),
-            }
+impl<'a> DocumentType<'a> {
+    pub fn from_gumbo_document<'c>(document: &'c ffi::GumboDocument) -> DocumentType<'c> {
+        DocumentType {
+            gumbo_document: document,
+            children: gumbo_vector_to_vector(&(*document).children).iter().filter_map(|&ptr| Node::from_gumbo_node(ptr)).collect(),
         }
     }
 
-    pub fn children<'a>(&'a self) -> &'a Vec<Node> {
+    pub fn children(&'a self) -> &'a Vec<Node<'a>> {
         &self.children
     }
 
     pub fn has_doctype(&self) -> bool {
+        self.gumbo_document.has_doctype != 0
+    }
+
+    pub fn name(&self) -> String {
         unsafe {
-            (*(self.gumbo_document)).has_doctype != 0
+            from_buf((*(self.gumbo_document)).name as *const u8)
         }
     }
 
-    pub fn name(&self) -> Option<String> {
+    pub fn public_identifier(&self) -> String {
         unsafe {
-            cstr_to_option_string((*(self.gumbo_document)).name)
+            from_buf((*(self.gumbo_document)).public_identifier as *const u8)
         }
     }
 
-    pub fn public_identifier(&self) -> Option<String> {
+    pub fn system_identifier(&self) -> String {
         unsafe {
-            cstr_to_option_string((*(self.gumbo_document)).public_identifier)
-        }
-    }
-
-    pub fn system_identifier(&self) -> Option<String> {
-        unsafe {
-            cstr_to_option_string((*(self.gumbo_document)).system_identifier)
+            from_buf((*(self.gumbo_document)).system_identifier as *const u8)
         }
     }
 
     pub fn doc_type_quirks_mode(&self) -> ffi::GumboQuirksModeEnum {
-        unsafe {
-            (*(self.gumbo_document)).doc_type_quirks_mode
-        }
+        self.gumbo_document.doc_type_quirks_mode
     }
 }
