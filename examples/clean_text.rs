@@ -3,33 +3,34 @@ extern crate libc;
 use std::os::args;
 use std::io::File;
 use std::path::Path;
-use gumbo::{Parser, Node, ElementNode, tag};
+use gumbo::{Parser, Node, ElementNode, TextNode, tag};
 use std::os::set_exit_status;
 use libc::consts::os::c95::EXIT_FAILURE;
 
-fn find_links<'a>(node: &'a Node<'a>) -> Vec<String> {
+fn clean_text<'a>(node: &'a Node<'a>) -> Vec<String> {
     let mut strings = Vec::new();
     match *node {
         ElementNode(ref element) => {
             match element.tag() {
-                tag::A => match element.attributes().find_equiv(&"href").map(|&x| x.value()) {
-                        Some(attribute_name) => strings.push(attribute_name),
-                        None                 => {}
-                    },
-                _ => {}
-            }
-            for child_node in element.children().iter() {
-                strings.push_all(find_links(child_node).as_slice());
+                tag::Script | tag::Style => {},
+                _ => {
+                    for child_node in element.children().iter() {
+                        strings.push_all(clean_text(child_node).as_slice());
+                    }
+                }
             }
         },
-        _ => {},
+        TextNode(ref text) => {
+            strings.push(text.text());
+        },
+        _ => {}
     }
     strings
 }
 
 fn main() {
     if args().len() != 2u {
-        println!("Usage: find_links <html filename>");
+        println!("Usage: clean_text <html filename>");
         set_exit_status(EXIT_FAILURE as int);
         return;
     }
@@ -45,7 +46,7 @@ fn main() {
 
     let parser = Parser::new();
     let output = parser.parse(contents.as_slice()).unwrap();
-    for link in find_links(&(output.root)).iter() {
-        println!("{}", link);
+    for cleaned_text in clean_text(&(output.root)).iter() {
+        println!("{}", cleaned_text);
     }
 }
