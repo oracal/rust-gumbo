@@ -1,13 +1,17 @@
 use ffi = super::ffi;
 use std::string::raw::{from_buf, from_buf_len};
 
-pub struct TextType<'a> {
+pub struct Text<'a> {
+    gumbo_node: &'a ffi::GumboNode,
     gumbo_text: &'a ffi::GumboText,
 }
 
-impl<'a> TextType<'a> {
-    pub fn from_gumbo_text(text: &'a ffi::GumboText) -> TextType<'a> {
-        TextType{ gumbo_text: text }
+impl<'a> Text<'a> {
+    pub fn from_gumbo_text(node: &'a ffi::GumboNode) -> Text<'a> {
+        Text{
+            gumbo_node: node,
+            gumbo_text: node.v.text(),
+        }
     }
 
     pub fn text(&self) -> String {

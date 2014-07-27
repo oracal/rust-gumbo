@@ -2,12 +2,12 @@ extern crate gumbo;
 use std::os::args;
 use std::io::File;
 use std::path::Path;
-use gumbo::{Parser, Node, Element, Document, tag};
+use gumbo::{Parser, Node, ElementNode, DocumentNode, tag};
 
 fn find_links<'a>(node: &'a Node<'a>) -> Vec<String> {
     let mut strings = Vec::new();
-    match node.content {
-        Element(ref element) => {
+    match *node {
+        ElementNode(ref element) => {
             match element.tag() {
                 tag::A => match element.attributes().find(&("href".into_string())).map(|&x| x.value()) {
                         Some(attribute_name) => strings.push(attribute_name),
@@ -19,7 +19,7 @@ fn find_links<'a>(node: &'a Node<'a>) -> Vec<String> {
                 strings.push_all(find_links(child_node).as_slice());
             }
         },
-        Document(ref document) => {
+        DocumentNode(ref document) => {
             for child_node in document.children().iter() {
                 strings.push_all(find_links(child_node).as_slice());
             }

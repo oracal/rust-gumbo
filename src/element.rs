@@ -6,19 +6,22 @@ use std::collections::HashMap;
 use super::tag::Tag;
 use std::string::raw::{from_buf, from_buf_len};
 
-pub struct ElementType<'a> {
+pub struct Element<'a> {
+    gumbo_node: &'a ffi::GumboNode,
     gumbo_element: &'a ffi::GumboElement,
     children: Vec<Node<'a>>,
     attributes: HashMap<String, Attribute<'a>>,
 }
 
-impl<'a> ElementType<'a> {
-    pub fn from_gumbo_element<'b>(element: &'b ffi::GumboElement) -> ElementType<'b> {
+impl<'a> Element<'a> {
+    pub fn from_gumbo_element<'b>(node: &'b ffi::GumboNode) -> Element<'b> {
+        let element = node.v.element();
         let vector = gumbo_vector_to_vector(&(*element).attributes);
-        ElementType {
+        Element {
+            gumbo_node: node,
             gumbo_element: element,
             children: gumbo_vector_to_vector(&(*element).children).iter().filter_map(|&ptr| Node::from_gumbo_node(ptr)).collect(),
-            attributes: ElementType::build_attributes(vector.as_slice()),
+            attributes: Element::build_attributes(vector.as_slice()),
         }
     }
 

@@ -8,13 +8,13 @@ extern crate libc;
 
 pub use parser::Parser;
 pub use node::Node;
-pub use element::ElementType;
+pub use element::Element;
 pub use attribute::Attribute;
-pub use document::DocumentType;
-pub use text::TextType;
-pub use node::{Document, Element, Text, Cdata, Comment, Whitespace};
+pub use document::Document;
+pub use text::Text;
+pub use node::{DocumentNode, ElementNode, TextNode, CdataNode, CommentNode, WhitespaceNode};
 
-mod ffi;
+pub mod ffi;
 mod node;
 mod output;
 mod attribute;

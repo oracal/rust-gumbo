@@ -3,14 +3,17 @@ use super::node::Node;
 use super::util::gumbo_vector_to_vector;
 use std::string::raw::from_buf;
 
-pub struct DocumentType<'a> {
+pub struct Document<'a> {
+    gumbo_node: &'a ffi::GumboNode,
     gumbo_document: &'a ffi::GumboDocument,
     children: Vec<Node<'a>>,
 }
 
-impl<'a> DocumentType<'a> {
-    pub fn from_gumbo_document<'c>(document: &'c ffi::GumboDocument) -> DocumentType<'c> {
-        DocumentType {
+impl<'a> Document<'a> {
+    pub fn from_gumbo_document<'c>(node: &'c ffi::GumboNode) -> Document<'c> {
+        let document = node.v.document();
+        Document {
+            gumbo_node: node,
             gumbo_document: document,
             children: gumbo_vector_to_vector(&(*document).children).iter().filter_map(|&ptr| Node::from_gumbo_node(ptr)).collect(),
         }
