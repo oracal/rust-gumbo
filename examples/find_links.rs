@@ -9,7 +9,7 @@ fn find_links<'a>(node: &'a Node<'a>) -> Vec<String> {
     match *node {
         ElementNode(ref element) => {
             match element.tag() {
-                tag::A => match element.attributes().find(&("href".into_string())).map(|&x| x.value()) {
+                tag::A => match element.attributes().find_equiv(&"href").map(|&x| x.value()) {
                         Some(attribute_name) => strings.push(attribute_name),
                         None                 => {}
                     },
