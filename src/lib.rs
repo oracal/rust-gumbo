@@ -13,8 +13,9 @@ pub use attribute::Attribute;
 pub use document::Document;
 pub use text::Text;
 pub use node::{DocumentNode, ElementNode, TextNode, CdataNode, CommentNode, WhitespaceNode};
+pub use util::SourcePosition;
 
-pub mod ffi;
+mod ffi;
 mod node;
 mod output;
 mod attribute;

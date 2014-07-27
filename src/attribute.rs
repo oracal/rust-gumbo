@@ -1,5 +1,14 @@
 use ffi = super::ffi;
 use std::string::raw::{from_buf, from_buf_len};
+use super::util::SourcePosition;
+
+#[repr(C)]
+pub enum Namespace {
+    None,
+    Xlink,
+    Xml,
+    Xmlns,
+}
 
 pub struct Attribute<'a> {
     gumbo_attribute: &'a ffi::GumboAttribute,
@@ -10,7 +19,7 @@ impl<'a> Attribute<'a> {
         Attribute { gumbo_attribute: attribute }
     }
 
-    pub fn namespace(&self) -> ffi::GumboAttributeNamespaceEnum {
+    pub fn namespace(&self) -> Namespace {
         self.gumbo_attribute.attr_namespace
     }
 
@@ -38,19 +47,19 @@ impl<'a> Attribute<'a> {
         }
     }
 
-    pub fn name_start(&self) -> ffi::GumboSourcePosition {
+    pub fn name_start(&self) -> SourcePosition {
         self.gumbo_attribute.name_start
     }
 
-    pub fn name_end(&self) -> ffi::GumboSourcePosition {
+    pub fn name_end(&self) -> SourcePosition {
         self.gumbo_attribute.name_end
     }
 
-    pub fn value_start(&self) -> ffi::GumboSourcePosition {
+    pub fn value_start(&self) -> SourcePosition {
         self.gumbo_attribute.value_start
     }
 
-    pub fn value_end(&self) -> ffi::GumboSourcePosition {
+    pub fn value_end(&self) -> SourcePosition {
         self.gumbo_attribute.value_end
     }
 }

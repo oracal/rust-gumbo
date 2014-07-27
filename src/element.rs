@@ -1,10 +1,17 @@
 use ffi = super::ffi;
 use super::node::Node;
 use super::attribute::Attribute;
-use super::util::gumbo_vector_to_vector;
+use super::util::{SourcePosition, gumbo_vector_to_vector};
 use std::collections::HashMap;
 use super::tag::Tag;
 use std::string::raw::{from_buf, from_buf_len};
+
+#[repr(C)]
+pub enum Namespace {
+    Html,
+    Svg,
+    MathML,
+}
 
 pub struct Element<'a> {
     gumbo_node: &'a ffi::GumboNode,
@@ -40,7 +47,7 @@ impl<'a> Element<'a> {
         self.gumbo_element.tag
     }
 
-    pub fn tag_namespace(&self) -> ffi::GumboNamespaceEnum {
+    pub fn tag_namespace(&self) -> Namespace {
         self.gumbo_element.tag_namespace
     }
 
@@ -56,11 +63,11 @@ impl<'a> Element<'a> {
         }
     }
 
-    pub fn start_pos(&self) -> ffi::GumboSourcePosition {
+    pub fn start_pos(&self) -> SourcePosition {
         self.gumbo_element.start_pos
     }
 
-    pub fn end_pos(&self) -> ffi::GumboSourcePosition {
+    pub fn end_pos(&self) -> SourcePosition {
         self.gumbo_element.end_pos
     }
 

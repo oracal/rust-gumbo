@@ -1,5 +1,6 @@
 use ffi = super::ffi;
 use std::string::raw::{from_buf, from_buf_len};
+use super::util::SourcePosition;
 
 pub struct Text<'a> {
     gumbo_node: &'a ffi::GumboNode,
@@ -26,7 +27,7 @@ impl<'a> Text<'a> {
         }
     }
 
-    pub fn start_pos(&self) -> ffi::GumboSourcePosition {
+    pub fn start_pos(&self) -> SourcePosition {
         self.gumbo_text.start_pos
     }
 }

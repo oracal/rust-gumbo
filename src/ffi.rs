@@ -1,12 +1,8 @@
 use libc::{c_uint, c_char, size_t, c_void, c_int};
 use super::tag::Tag;
-
-#[repr(C)]
-pub struct GumboSourcePosition {
-    pub line: c_uint,
-    pub column: c_uint,
-    pub offset: c_uint,
-}
+use super::element;
+use super::attribute;
+use super::util::SourcePosition;
 
 #[repr(C)]
 pub struct GumboStringPiece {
@@ -21,23 +17,18 @@ pub struct GumboVector {
     pub capacity: c_uint,
 }
 
-pub type GumboAttributeNamespaceEnum = c_uint;
-pub static GUMBO_ATTR_NAMESPACE_NONE: c_uint = 0;
-pub static GUMBO_ATTR_NAMESPACE_XLINK: c_uint = 1;
-pub static GUMBO_ATTR_NAMESPACE_XML: c_uint = 2;
-pub static GUMBO_ATTR_NAMESPACE_XMLNS: c_uint = 3;
 
 #[repr(C)]
 pub struct GumboAttribute {
-    pub attr_namespace: GumboAttributeNamespaceEnum,
+    pub attr_namespace: attribute::Namespace,
     pub name: *const c_char,
     pub original_name: GumboStringPiece,
     pub value: *const c_char,
     pub original_value: GumboStringPiece,
-    pub name_start: GumboSourcePosition,
-    pub name_end: GumboSourcePosition,
-    pub value_start: GumboSourcePosition,
-    pub value_end: GumboSourcePosition,
+    pub name_start: SourcePosition,
+    pub name_end: SourcePosition,
+    pub value_start: SourcePosition,
+    pub value_end: SourcePosition,
 }
 
 pub type GumboNodeType = c_uint;
@@ -52,11 +43,6 @@ pub type GumboQuirksModeEnum = c_uint;
 pub static GUMBO_DOCTYPE_NO_QUIRKS: c_uint = 0;
 pub static GUMBO_DOCTYPE_QUIRKS: c_uint = 1;
 pub static GUMBO_DOCTYPE_LIMITED_QUIRKS: c_uint = 2;
-
-pub type GumboNamespaceEnum = c_uint;
-pub static GUMBO_NAMESPACE_HTML: c_uint = 0;
-pub static GUMBO_NAMESPACE_SVG: c_uint = 1;
-pub static GUMBO_NAMESPACE_MATHML: c_uint = 2;
 
 pub type GumboParseFlags = c_uint;
 pub static GUMBO_INSERTION_NORMAL: c_uint = 0;
@@ -85,18 +71,18 @@ pub struct GumboDocument {
 pub struct GumboText {
     pub text: *const c_char,
     pub original_text: GumboStringPiece,
-    pub start_pos: GumboSourcePosition,
+    pub start_pos: SourcePosition,
 }
 
 #[repr(C)]
 pub struct GumboElement {
     pub children: GumboVector,
     pub tag: Tag,
-    pub tag_namespace: GumboNamespaceEnum,
+    pub tag_namespace: element::Namespace,
     pub original_tag: GumboStringPiece,
     pub original_end_tag: GumboStringPiece,
-    pub start_pos: GumboSourcePosition,
-    pub end_pos: GumboSourcePosition,
+    pub start_pos: SourcePosition,
+    pub end_pos: SourcePosition,
     pub attributes: GumboVector,
 }
 
@@ -148,7 +134,7 @@ pub struct GumboOutput {
 
 #[link(name = "gumbo")]
 extern {
-    pub static kGumboEmptySourcePosition: GumboSourcePosition;
+    pub static kGumboEmptySourcePosition: SourcePosition;
     pub static kGumboEmptyString: GumboStringPiece;
     pub static kGumboEmptyVector: GumboVector;
     pub static kGumboDefaultOptions: GumboOptions;
