@@ -3,14 +3,14 @@ extern crate libc;
 use std::os::args;
 use std::io::File;
 use std::path::Path;
-use gumbo::{Parser, Node, ElementNode, tag};
+use gumbo::{Parser, Node, Element, tag};
 use std::os::set_exit_status;
 use libc::consts::os::c95::EXIT_FAILURE;
 
 fn find_links(node: &Node) -> Vec<String> {
     let mut strings = Vec::new();
     match *node {
-        ElementNode(ref element) => {
+        Element(ref element) => {
             match element.tag() {
                 tag::A => match element.attributes().find_equiv(&"href").map(|&x| x.value()) {
                         Some(attribute_name) => strings.push(attribute_name),

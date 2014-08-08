@@ -3,18 +3,18 @@ extern crate libc;
 use std::os::args;
 use std::io::File;
 use std::path::Path;
-use gumbo::{Parser, Node, ElementNode, TextNode, tag};
+use gumbo::{Parser, Node, Element, Text, tag};
 use std::os::set_exit_status;
 use libc::consts::os::c95::EXIT_FAILURE;
 
 fn get_title(node: &Node) -> Option<String> {
     match *node {
-        ElementNode(ref element) => {
+        Element(ref element) => {
             match element.tag() {
                 tag::Title => {
                     for child_node in element.children().iter() {
                         match *child_node {
-                            TextNode(text) => return Some(text.text()),
+                            Text(text) => return Some(text.text()),
                             _ => {}
                         }
                     }

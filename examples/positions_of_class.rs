@@ -3,7 +3,7 @@ extern crate libc;
 use std::os::args;
 use std::io::File;
 use std::path::Path;
-use gumbo::{Parser, Node, ElementNode};
+use gumbo::{Parser, Node, Element};
 use std::os::set_exit_status;
 use libc::consts::os::c95::EXIT_FAILURE;
 
@@ -16,7 +16,7 @@ struct Position {
 fn positions_of_class(node: &Node, class_name: &str) -> Vec<Position> {
     let mut positions = Vec::new();
     match *node {
-        ElementNode(ref element) => {
+        Element(ref element) => {
             match element.attributes().find_equiv(&"class") {
                 Some(class_attribute) => {
                     match class_attribute.value().as_slice().find_str(class_name) {

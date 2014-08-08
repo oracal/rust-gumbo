@@ -4,12 +4,12 @@ use super::document::Document;
 use super::element::Element;
 
 pub enum Node<'a> {
-    DocumentNode(Document<'a>),
-    ElementNode(Element<'a>),
-    TextNode(Text<'a>),
-    CdataNode(Text<'a>),
-    CommentNode(Text<'a>),
-    WhitespaceNode(Text<'a>),
+    Document(Document<'a>),
+    Element(Element<'a>),
+    Text(Text<'a>),
+    Cdata(Text<'a>),
+    Comment(Text<'a>),
+    Whitespace(Text<'a>),
 }
 
 impl<'a> Node<'a> {
@@ -19,12 +19,12 @@ impl<'a> Node<'a> {
                 None
             } else {
                 match (*node).node_type {
-                    ffi::GUMBO_NODE_DOCUMENT   => Some(DocumentNode(Document::from_gumbo_document(node))),
-                    ffi::GUMBO_NODE_ELEMENT    => Some(ElementNode(Element::from_gumbo_element(node))),
-                    ffi::GUMBO_NODE_TEXT       => Some(TextNode(Text::from_gumbo_text(node))),
-                    ffi::GUMBO_NODE_CDATA      => Some(CdataNode(Text::from_gumbo_text(node))),
-                    ffi::GUMBO_NODE_COMMENT    => Some(CommentNode(Text::from_gumbo_text(node))),
-                    ffi::GUMBO_NODE_WHITESPACE => Some(WhitespaceNode(Text::from_gumbo_text(node))),
+                    ffi::GUMBO_NODE_DOCUMENT   => Some(Document(Document::from_gumbo_document(node))),
+                    ffi::GUMBO_NODE_ELEMENT    => Some(Element(Element::from_gumbo_element(node))),
+                    ffi::GUMBO_NODE_TEXT       => Some(Text(Text::from_gumbo_text(node))),
+                    ffi::GUMBO_NODE_CDATA      => Some(Cdata(Text::from_gumbo_text(node))),
+                    ffi::GUMBO_NODE_COMMENT    => Some(Comment(Text::from_gumbo_text(node))),
+                    ffi::GUMBO_NODE_WHITESPACE => Some(Whitespace(Text::from_gumbo_text(node))),
                     _                          => None,
                 }
             }

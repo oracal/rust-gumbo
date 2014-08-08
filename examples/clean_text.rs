@@ -3,14 +3,14 @@ extern crate libc;
 use std::os::args;
 use std::io::File;
 use std::path::Path;
-use gumbo::{Parser, Node, ElementNode, TextNode, tag};
+use gumbo::{Parser, Node, Element, Text, tag};
 use std::os::set_exit_status;
 use libc::consts::os::c95::EXIT_FAILURE;
 
 fn clean_text(node: &Node) -> Vec<String> {
     let mut strings = Vec::new();
     match *node {
-        ElementNode(ref element) => {
+        Element(ref element) => {
             match element.tag() {
                 tag::Script | tag::Style => {},
                 _ => {
@@ -20,7 +20,7 @@ fn clean_text(node: &Node) -> Vec<String> {
                 }
             }
         },
-        TextNode(ref text) => {
+        Text(ref text) => {
             strings.push(text.text());
         },
         _ => {}

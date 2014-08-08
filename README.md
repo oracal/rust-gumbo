@@ -14,7 +14,7 @@ use gumbo::{Parser, Node, ElementNode};
 
 fn dfs(node: &Node) {
     match *node {
-        ElementNode(ref element) => {
+        Element(ref element) => {
             for child_node in element.children().iter() {
                 dfs(child_node)
             }
