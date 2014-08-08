@@ -92,13 +92,13 @@ pub struct NodeData {
 }
 
 impl NodeData {
-    pub fn document(&self) -> &GumboDocument {
+    pub fn document(&mut self) -> *mut GumboDocument {
         unsafe { ::std::mem::transmute(self) }
     }
-    pub fn element(&self) -> &GumboElement {
+    pub fn element(&mut self) -> *mut GumboElement {
         unsafe { ::std::mem::transmute(self) }
     }
-    pub fn text(&self) -> &GumboText {
+    pub fn text(&mut self) -> *mut GumboText {
         unsafe { ::std::mem::transmute(self) }
     }
 }

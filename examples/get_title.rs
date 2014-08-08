@@ -53,7 +53,7 @@ fn main() {
 
     let parser = Parser::new();
     let output = parser.parse(contents.as_slice()).unwrap();
-    match get_title(&(output.root)) {
+    match get_title(output.root()) {
         Some(title) => println!("{}", title),
         None => println!("No title found")
     }

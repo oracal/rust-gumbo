@@ -45,7 +45,7 @@ fn main() {
 
     let parser = Parser::new();
     let output = parser.parse(contents.as_slice()).unwrap();
-    for link in find_links(&(output.root)).iter() {
+    for link in find_links(output.root()).iter() {
         println!("{}", link);
     }
 }

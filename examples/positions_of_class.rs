@@ -61,7 +61,7 @@ fn main() {
 
     let parser = Parser::new();
     let output = parser.parse(contents.as_slice()).unwrap();
-    for position in positions_of_class(&(output.root), class_name.as_slice()).iter() {
+    for position in positions_of_class(output.root(), class_name.as_slice()).iter() {
         println!("byte {} to byte {}", position.start, position.end);
         assert!(class_name.as_slice() == contents.as_slice().slice(position.start, position.end));
     }

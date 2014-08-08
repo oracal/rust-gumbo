@@ -8,19 +8,20 @@ extern crate libc;
 
 pub use parser::Parser;
 pub use node::Node;
-pub use element::Element;
-pub use attribute::Attribute;
 pub use document::Document;
 pub use text::Text;
 pub use node::{DocumentNode, ElementNode, TextNode, CdataNode, CommentNode, WhitespaceNode};
 pub use util::SourcePosition;
+pub use output::Output;
+pub use ffi::{GumboOptions, GumboAllocatorFunction, GumboDeallocatorFunction, GumboQuirksModeEnum};
 
+#[allow(dead_code)]
 mod ffi;
 mod node;
 mod output;
-mod attribute;
+pub mod attribute;
 mod document;
-mod element;
+pub mod element;
 mod text;
 mod util;
 mod parser;

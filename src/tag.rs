@@ -158,9 +158,9 @@ pub enum Tag {
 }
 
 impl Tag {
-    pub fn tag_name(self) -> &'static str {
+    pub fn tag_name(&self) -> &'static str {
         unsafe {
-            c_str_to_static_slice(ffi::gumbo_normalized_tagname(self))
+            c_str_to_static_slice(ffi::gumbo_normalized_tagname(*self))
         }
     }
 

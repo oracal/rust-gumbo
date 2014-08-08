@@ -46,7 +46,7 @@ fn main() {
 
     let parser = Parser::new();
     let output = parser.parse(contents.as_slice()).unwrap();
-    for cleaned_text in clean_text(&(output.root)).iter() {
+    for cleaned_text in clean_text(output.root()).iter() {
         println!("{}", cleaned_text);
     }
 }
