@@ -8,7 +8,7 @@ use std::string::raw::{from_buf, from_buf_len};
 use std::kinds::marker::ContravariantLifetime;
 
 #[repr(C)]
-pub enum Namespace {
+pub enum ElementNamespace {
     Html,
     Svg,
     MathML,
@@ -49,7 +49,7 @@ impl<'a> Element<'a> {
         self.gumbo_element().tag
     }
 
-    pub fn tag_namespace(&self) -> Namespace {
+    pub fn tag_namespace(&self) -> ElementNamespace {
         self.gumbo_element().tag_namespace
     }
 

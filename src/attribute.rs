@@ -4,7 +4,7 @@ use super::util::SourcePosition;
 use std::kinds::marker::ContravariantLifetime;
 
 #[repr(C)]
-pub enum Namespace {
+pub enum AttributeNamespace {
     None,
     Xlink,
     Xml,
@@ -24,7 +24,7 @@ impl<'a> Attribute<'a> {
         }
     }
 
-    pub fn namespace(&self) -> Namespace {
+    pub fn namespace(&self) -> AttributeNamespace {
         self.gumbo_attribute().attr_namespace
     }
 

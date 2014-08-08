@@ -1,7 +1,7 @@
 use libc::{c_uint, c_char, size_t, c_void, c_int};
 use super::tag::Tag;
-use super::element;
-use super::attribute;
+use super::element::ElementNamespace;
+use super::attribute::AttributeNamespace;
 use super::util::SourcePosition;
 
 #[repr(C)]
@@ -20,7 +20,7 @@ pub struct GumboVector {
 
 #[repr(C)]
 pub struct GumboAttribute {
-    pub attr_namespace: attribute::Namespace,
+    pub attr_namespace: AttributeNamespace,
     pub name: *const c_char,
     pub original_name: GumboStringPiece,
     pub value: *const c_char,
@@ -78,7 +78,7 @@ pub struct GumboText {
 pub struct GumboElement {
     pub children: GumboVector,
     pub tag: Tag,
-    pub tag_namespace: element::Namespace,
+    pub tag_namespace: ElementNamespace,
     pub original_tag: GumboStringPiece,
     pub original_end_tag: GumboStringPiece,
     pub start_pos: SourcePosition,
