@@ -10,7 +10,7 @@ Examples
 
 ```rust
 extern crate gumbo;
-use gumbo::{Parser, Node, ElementNode};
+use gumbo::{Parser, Node, Element};
 
 fn dfs(node: &Node) {
     match *node {
