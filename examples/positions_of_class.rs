@@ -13,7 +13,7 @@ struct Position {
     end: uint,
 }
 
-fn positions_of_class<'a>(node: &'a Node<'a>, class_name: &str) -> Vec<Position> {
+fn positions_of_class(node: &Node, class_name: &str) -> Vec<Position> {
     let mut positions = Vec::new();
     match *node {
         ElementNode(ref element) => {

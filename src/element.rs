@@ -41,8 +41,8 @@ impl<'a> Element<'a> {
         }
     }
 
-    pub fn children(&'a self) -> &'a Vec<Node<'a>> {
-        &self.children
+    pub fn children<'b>(&'b self) -> &'b [Node<'a>] {
+        self.children.as_slice()
     }
 
     pub fn tag(&self) -> Tag {
@@ -73,7 +73,7 @@ impl<'a> Element<'a> {
         self.gumbo_element().end_pos
     }
 
-    pub fn attributes(&'a self) -> &'a HashMap<String, Attribute<'a>> {
+    pub fn attributes<'b>(&'b self) -> &'b HashMap<String, Attribute<'a>> {
         &self.attributes
     }
 

@@ -25,8 +25,8 @@ impl<'a> Document<'a> {
         }
     }
 
-    pub fn children(&'a self) -> &'a Vec<Node<'a>> {
-        &self.children
+    pub fn children<'b>(&'b self) -> &'b [Node<'a>] {
+        self.children.as_slice()
     }
 
     pub fn has_doctype(&self) -> bool {

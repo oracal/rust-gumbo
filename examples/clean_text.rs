@@ -7,7 +7,7 @@ use gumbo::{Parser, Node, ElementNode, TextNode, tag};
 use std::os::set_exit_status;
 use libc::consts::os::c95::EXIT_FAILURE;
 
-fn clean_text<'a>(node: &'a Node<'a>) -> Vec<String> {
+fn clean_text(node: &Node) -> Vec<String> {
     let mut strings = Vec::new();
     match *node {
         ElementNode(ref element) => {

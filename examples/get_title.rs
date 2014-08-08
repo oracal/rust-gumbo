@@ -7,7 +7,7 @@ use gumbo::{Parser, Node, ElementNode, TextNode, tag};
 use std::os::set_exit_status;
 use libc::consts::os::c95::EXIT_FAILURE;
 
-fn get_title<'a>(node: &'a Node<'a>) -> Option<String> {
+fn get_title(node: &Node) -> Option<String> {
     match *node {
         ElementNode(ref element) => {
             match element.tag() {

@@ -7,7 +7,7 @@ use gumbo::{Parser, Node, ElementNode, tag};
 use std::os::set_exit_status;
 use libc::consts::os::c95::EXIT_FAILURE;
 
-fn find_links<'a>(node: &'a Node<'a>) -> Vec<String> {
+fn find_links(node: &Node) -> Vec<String> {
     let mut strings = Vec::new();
     match *node {
         ElementNode(ref element) => {

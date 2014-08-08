@@ -12,7 +12,7 @@ Examples
 extern crate gumbo;
 use gumbo::{Parser, Node, ElementNode};
 
-fn dfs<'a>(node: &'a Node<'a>) {
+fn dfs(node: &Node) {
     match *node {
         ElementNode(ref element) => {
             for child_node in element.children().iter() {
@@ -35,4 +35,3 @@ TODO
 ----
 
 * Add access to the parent of a node from that node to allow more complicated algorithms on the tree.
-* Remove the need to specify lifetime requirements in the api, this should be inferred.
