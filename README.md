@@ -5,8 +5,8 @@ A Rust wrapper around google's c library [gumbo](https://github.com/google/gumbo
 
 First and foremost it tries to provide idiomatic rust api. Secondly it tries to not have much added overhead on top of the c library.
 
-Examples
---------
+Example
+-------
 
 ```rust
 extern crate gumbo;
@@ -35,3 +35,8 @@ TODO
 ----
 
 * Add access to the parent of a node from that node to allow more complicated algorithms on the tree.
+
+License
+-------
+
+MIT
