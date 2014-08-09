@@ -3,7 +3,7 @@ Rust Gumbo
 
 A Rust wrapper around google's c library [gumbo](https://github.com/google/gumbo-parser).
 
-First and foremost it tries to provide idiomatic rust api. Secondly it tries to not have much added overhead on top of the c library.
+First and foremost it tries to provide an idiomatic rust api around gumbo. Secondly, it tries to not add much overhead on top of the c library.
 
 Example
 -------
