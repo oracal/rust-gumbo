@@ -34,12 +34,12 @@ impl<'a> Node<'a> {
 
     pub fn parent(&self) -> Option<Node<'a>> {
         match *self {
-            Document(document) => document.parent(),
-            Element(element) => element.parent(),
-            Text(text) => text.parent(),
-            Cdata(text) => text.parent(),
-            Comment(text) => text.parent(),
-            Whitespace(text) => text.parent(),
+            Document(ref document) => document.parent(),
+            Element(ref element)   => element.parent(),
+            Text(ref text)         => text.parent(),
+            Cdata(ref text)        => text.parent(),
+            Comment(ref text)      => text.parent(),
+            Whitespace(ref text)   => text.parent(),
         }
     }
 }

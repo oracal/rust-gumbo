@@ -16,6 +16,7 @@ pub enum ElementNamespace {
 
 pub struct Element<'a> {
     node: *mut ffi::GumboNode,
+    attributes: HashMap<String, Attribute<'a>>,
     lt: ContravariantLifetime<'a>,
 }
 
@@ -32,6 +33,7 @@ impl<'a> Element<'a> {
             let element = (*node).v.element();
             Element {
                 node: node,
+                attributes: Element::build_attributes(gumbo_vector_to_vector(&(*element).attributes).as_slice()),
                 lt: ContravariantLifetime,
             }
         }
@@ -39,8 +41,10 @@ impl<'a> Element<'a> {
 
     fn build_attributes<'b>(attributes: &[*mut ffi::GumboAttribute]) -> HashMap<String, Attribute<'b>> {
         unsafe {
-            attributes.iter().
-                map(|&attribute| (from_buf((*attribute).name as *const u8), Attribute::from_gumbo_attribute(attribute))).collect()
+            attributes.
+                iter().
+                map(|&attribute| (from_buf((*attribute).name as *const u8), Attribute::from_gumbo_attribute(attribute))).
+                collect()
         }
     }
 
@@ -85,8 +89,8 @@ impl<'a> Element<'a> {
         self.gumbo_element().end_pos
     }
 
-    pub fn attributes<'b>(&'b self) -> HashMap<String, Attribute<'a>> {
-        Element::build_attributes(gumbo_vector_to_vector(&self.gumbo_element().attributes).as_slice())
+    pub fn attributes<'b>(&'b self) -> &'b HashMap<String, Attribute<'a>> {
+        &self.attributes
     }
 
     fn gumbo_element(&self) -> ffi::GumboElement {

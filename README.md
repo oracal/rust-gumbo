@@ -29,12 +29,7 @@ let output = parser.parse(html.as_slice()).unwrap();
 dfs(output.root());
 ```
 
-Check out the examples folder for examples that match up to the c libraries examples.
-
-TODO
-----
-
-* Add access to the parent of a node from that node to allow more complicated algorithms on the tree.
+Check out the examples folder for examples that match up to the ones from the c library.
 
 License
 -------
