@@ -3,6 +3,7 @@ use super::text::Text;
 use super::document::Document;
 use super::element::Element;
 
+#[deriving(PartialEq, Eq)]
 pub enum Node<'a> {
     Document(Document<'a>),
     Element(Element<'a>),
@@ -28,6 +29,17 @@ impl<'a> Node<'a> {
                     _                          => None,
                 }
             }
+        }
+    }
+
+    pub fn parent(&self) -> Option<Node<'a>> {
+        match *self {
+            Document(document) => document.parent(),
+            Element(element) => element.parent(),
+            Text(text) => text.parent(),
+            Cdata(text) => text.parent(),
+            Comment(text) => text.parent(),
+            Whitespace(text) => text.parent(),
         }
     }
 }

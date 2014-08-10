@@ -6,27 +6,35 @@ use std::kinds::marker::ContravariantLifetime;
 
 pub struct Document<'a> {
     node: *mut ffi::GumboNode,
-    children: Vec<Node<'a>>,
     lt: ContravariantLifetime<'a>
+}
+
+impl<'a> Eq for Document<'a> {}
+impl<'a> PartialEq for Document<'a> {
+    fn eq(&self, other: &Document<'a>) -> bool {
+        self.node == other.node
+    }
 }
 
 impl<'a> Document<'a> {
     pub fn from_gumbo_document(node: *mut ffi::GumboNode) -> Document<'a> {
-        unsafe {
-            Document {
-                node: node,
-                children:
-                    gumbo_vector_to_vector(&(*((*node).v.document())).children).
-                    iter().
-                    filter_map(|&ptr| Node::from_gumbo_node(ptr)).
-                    collect(),
-                lt: ContravariantLifetime,
-            }
+        Document {
+            node: node,
+            lt: ContravariantLifetime,
         }
     }
 
-    pub fn children<'b>(&'b self) -> &'b [Node<'a>] {
-        self.children.as_slice()
+    pub fn parent(&self) -> Option<Node<'a>> {
+        unsafe {
+            Node::from_gumbo_node((*self.node).parent)
+        }
+    }
+
+    pub fn children(&self) -> Vec<Node<'a>> {
+        gumbo_vector_to_vector(&self.gumbo_document().children).
+            iter().
+            filter_map(|&ptr| Node::from_gumbo_node(ptr)).
+            collect()
     }
 
     pub fn has_doctype(&self) -> bool {

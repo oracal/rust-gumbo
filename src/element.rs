@@ -16,9 +16,14 @@ pub enum ElementNamespace {
 
 pub struct Element<'a> {
     node: *mut ffi::GumboNode,
-    children: Vec<Node<'a>>,
-    attributes: HashMap<String, Attribute<'a>>,
     lt: ContravariantLifetime<'a>,
+}
+
+impl<'a> Eq for Element<'a> {}
+impl<'a> PartialEq for Element<'a> {
+    fn eq(&self, other: &Element<'a>) -> bool {
+        self.node == other.node
+    }
 }
 
 impl<'a> Element<'a> {
@@ -27,8 +32,6 @@ impl<'a> Element<'a> {
             let element = (*node).v.element();
             Element {
                 node: node,
-                children: gumbo_vector_to_vector(&(*element).children).iter().filter_map(|&ptr| Node::from_gumbo_node(ptr)).collect(),
-                attributes: Element::build_attributes(gumbo_vector_to_vector(&(*element).attributes).as_slice()),
                 lt: ContravariantLifetime,
             }
         }
@@ -41,8 +44,17 @@ impl<'a> Element<'a> {
         }
     }
 
-    pub fn children<'b>(&'b self) -> &'b [Node<'a>] {
-        self.children.as_slice()
+    pub fn parent(&self) -> Option<Node<'a>> {
+        unsafe {
+            Node::from_gumbo_node((*self.node).parent)
+        }
+    }
+
+    pub fn children(&self) -> Vec<Node<'a>> {
+        gumbo_vector_to_vector(&self.gumbo_element().children).
+            iter().
+            filter_map(|&ptr| Node::from_gumbo_node(ptr)).
+            collect()
     }
 
     pub fn tag(&self) -> Tag {
@@ -73,8 +85,8 @@ impl<'a> Element<'a> {
         self.gumbo_element().end_pos
     }
 
-    pub fn attributes<'b>(&'b self) -> &'b HashMap<String, Attribute<'a>> {
-        &self.attributes
+    pub fn attributes<'b>(&'b self) -> HashMap<String, Attribute<'a>> {
+        Element::build_attributes(gumbo_vector_to_vector(&self.gumbo_element().attributes).as_slice())
     }
 
     fn gumbo_element(&self) -> ffi::GumboElement {
